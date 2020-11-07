@@ -18,44 +18,50 @@ def runcmd(cmd):
 def help():
     print("\t\tMAIN MENU")
     print()
-    print("\tdate-> to show date & time")
-    print("\tcal->to show calender")
-    print("\treboot-> to reboot the system")
-    print("\tshutdown-> to shutdown the system")
-    print("\tram_s-> to show status of RAM")
-    print("\tcpu_s-> to show status of cpu")
-    print("\tdisk_s-> to show available disk status")
-    print("\tip-> to show ip address of system")
-    print("\tPress 1 to configure httpd server")
-    print("\tPress 2 to remote login via ssh")
-    print("\tPress 3 to configure Hadoop DFS")
-    print("\tPress 4 to to upload files using scp protocol")
-    print("\tPress 5 to show running docker image status")
-    print("\tPress 6 to show available os images")
-    print("\tPress 7 to install docker image:")
-    print("\tPress 8 to show data of packets(payload) passes over network/Internet:")
+    print("\t{:20s}To show date & time".format("date"))
+    print("\t{:20s}To show calender".format("cal"))
+    print("\t{:20s}To reboot the system".format("reboot"))
+    print("\t{:20s}To shutdown the system".format("shutdown"))
+    print("\t{:20s}To show status of RAM".format("ram_s"))
+    print("\t{:20s}To show status of cpu".format("cpu_s"))
+    print("\t{:20s}To show available disk status".format("disk_s"))
+    print("\t{:20s}To show ip address of system".format("ip"))
+    print("\t{:20s}To configure httpd server".format("press 1"))
+    print("\t{:20s}To remote login via ssh".format("press 2"))
+    print("\t{:20s}To configure Hadoop DFS".format("press 3"))
+    print("\t{:20s}To upload files using scp protocol".format("press 4"))
+    print("\t{:20s}To show running docker image status".format("press 5"))
+    print("\t{:20s}To show available os images".format("press 6"))
+    print("\t{:20s}To install docker image:".format("press 7"))
+    print("\t{:20s}To Format a disk:".format("press 8")) 
     print()
 
 def helphttpd():
     print("\t\thttpd SERVER MENU")
     print()
-    print("\tEnter 1 to start httpd server")
-    print("\tEnter 2 to stop httpd server")
-    print("\tEnter 3 to start firewall of system")
-    print("\tEnter 4 to stop firewall of system")
-    print("\tEnter 5 to show status of httpd server")
+    print("\t{:20s}To start httpd server".format("press 1"))
+    print("\t{:20s}To stop httpd server".format("press 2"))
+    print("\t{:20s}To start firewall of system".format("press 3"))
+    print("\t{:20s}To stop firewall of system".format("press 4"))
+    print("\t{:20s}To show status of httpd server".format("press 5"))
     print()
 
 def helphadoop():
-    print("\t\tApache Hadoop MENU")
+    print("\t\tApache Hadoop Menu")
     print()
-    print("\tEnter 1 to Start Masternode.")
-    print("\tEnter 2 to start Datanode.")
-    print("\tEnter 3 to show dfs cluster report.")
-    
+    print("\t{:20s}To Start Masternode".format("press 1"))
+    print("\t{:20s}To start Datanode".format("press 2"))
+    print("\t{:20s}To show dfs cluster report".format("press 3"))
     print()
-    
-   
+
+def helpformat():
+    print("\t\tDisk Format menu")
+    print()
+    print("\t{:20s}To Show no. of attached disk ".format("press 1"))
+    print("\t{:20s}To make partition".format("press 2"))
+    print("\t{:20s}To do format the disk".format("press 3"))
+    print("\t{:20s}To mount the formatted disk".format("press 4"))
+    print()
     
 os.system("tput setaf 3")
 print("\twelcome to mycmd menu ")
@@ -165,11 +171,18 @@ while True:
                 print()
                 break
             elif "1" in cmd:
-                pass
+                inp=input("Enter ip of master node:")
+                command="ssh "+inp+" hadoop-daemon.sh start namenode"
+                os.system(command)
             elif "2" in cmd:
-                pass
+                inp=input("Enter ip of slave node:")
+                command="ssh "+inp+" hadoop-daemon.sh start datanode"
+                os.system(command)
             elif "3" in cmd:
-                pass
+                inp=input("Enter ip of master node:")
+                command="ssh "+inp+" hadoop dfsadmin -report"
+                os.system(command)
+                
     elif "4" in cmd:
         file=input("Enter file name to be uploaded:")
         path=input("Enter path (ip address):/path ")
@@ -185,9 +198,36 @@ while True:
         img=input("\tEnter docker image name:")
         os.system("docker run -i -t {}".format(img)) 
         
-        
+    elif "8" in cmd:
+        print("\t\tDisk Format process...")
+        print("\tEnter h for help")
+
+        while True:
+            print()
+            cmd=input("\tEnter your choice:")
+            print()
+            if "h" in cmd:
+                helpformat()
+            elif "q" in cmd:
+                print("\t\tmy command line...")
+                print()
+                break
+            elif "1" in cmd: 
+                os.system("fdisk -l")
+            elif "2" in cmd:
+                inp=input("Enter path of disk:")
+                command="fdisk "+inp
+                os.system(command)
+            elif "3" in cmd:
+                inp=input("Enter path of disk:")
+                command="mkfs.ext4"+inp
+                os.system(command) 
+            elif "4" in cmd:
+                inp=input("Enter name of directory to mount formatted disk")
+                command="mkdir /"+inp
+                os.system(command) 
+    
     else:
         os.system("tput setaf 1")
         print("\tinvalid command")
         os.system("tput setaf 2")
-
