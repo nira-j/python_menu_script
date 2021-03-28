@@ -1,2 +1,2 @@
 # python_menu_script
-![1.png]
+![](1.png)
